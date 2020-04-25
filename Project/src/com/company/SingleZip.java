@@ -1,27 +1,38 @@
 package com.company;
 
+import java.io.*;
+import java.util.ArrayList;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
+
 public class SingleZip {
-    public String fileName;
-    public String extractName;
+    public String fileNameZIP;//The ZIP filename
+    public String extractName = null;
+    public boolean extracted;
+    public ArrayList<String> filenames;//Contents filenames for checking
+    public String manifestFile; //MF
+    public String signatureFile; //SF
+    public String signedFile; //.rsa or whatever
+    public String pathZip;
 
     // Create a class constructor for the MyClass class
-    public SingleZip(String name) {
-        fileName = name;  // Set the initial value for the class attribute x
+    public SingleZip(String zipName,String pathName) {//ZIPNAME has to be the FULL path name
+        pathZip = pathName;
+        fileNameZIP = zipName;  // Set the initial value for the class attribute x
+        unzip(pathZip+"\\" +fileNameZIP,pathZip+"\\" + fileNameZIP.substring(0,zipName.length()-4));
+        //filenames = extract(zipName.substring(0,zipName.length()-4)+"folder");
+
     }
 
-    public boolean[] runTests()
+    public String[] runTests()
     {
         return null;
     }
 
-    public boolean extract(String extractAs)
-    {
-        return false;
-    }
 
-    public boolean extractable(String extractAs)
+    public boolean checkExtract()
     {
-        return false;
+        return extracted;
     }
 
     public boolean hasMF()
@@ -59,9 +70,63 @@ public class SingleZip {
         return false;
     }
 
-    public boolean difSigners()
+    public boolean difSigners(String MF, String SF)
     {
         return false;
+    }
+
+    private ArrayList<String> unzip(String zipFilePath, String destDir) {
+        File dir = new File(destDir);
+        // create output directory if it doesn't exist
+        if(!dir.exists())
+        {
+            dir.mkdirs();
+        }
+        FileInputStream fis;
+        //buffer for read and write data to file
+        byte[] buffer = new byte[1024];
+        try
+        {
+            ArrayList<String> filenames = new ArrayList<String>();
+            fis = new FileInputStream(zipFilePath);
+            ZipInputStream zis = new ZipInputStream(fis);
+            ZipEntry ze = zis.getNextEntry();
+            while(ze != null)
+            {
+                String fileName = ze.getName();
+                filenames.add(fileName);
+                File newFile = new File(destDir + File.separator + fileName);
+                System.out.println("Unzipping to "+newFile.getAbsolutePath());
+                //create directories for sub directories in zip
+                new File(newFile.getParent()).mkdirs();
+                FileOutputStream fos = new FileOutputStream(newFile);
+                int len;
+                while ((len = zis.read(buffer)) > 0) {
+                    fos.write(buffer, 0, len);
+                }
+                fos.close();
+                //close this ZipEntry
+                zis.closeEntry();
+                ze = zis.getNextEntry();
+            }
+            //close last ZipEntry
+            zis.closeEntry();
+            zis.close();
+            fis.close();
+
+            extractName = destDir;
+            extracted = true;
+            return filenames;
+
+
+        } catch (IOException e)
+        {
+            e.printStackTrace();
+            extractName = null;
+            extracted = false;
+            return null;//This means it has failed to extract the file in its entirety, failing a zip issue
+        }
+
     }
 
 }
