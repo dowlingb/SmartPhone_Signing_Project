@@ -6,16 +6,16 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 public class SingleZip {
-    public String fileNameZIP;//The ZIP filename
-    public String extractName = null;
+    public String fileNameZIP;//The ZIP filename we are working off of
+    public String extractName = null;//Redundant?
     public boolean extracted;
     public ArrayList<String> filenames;//Contents filenames for checking
     public File manifestFile; //MF
     public File signatureFile; //SF
     public File signedFile; //.rsa or whatever
-    public String pathZip;
-    public String extractLocation;
-    public ArrayList<String> fileNameList;//All filenames from extraction
+    public String pathZip;//Where the files are to be extracted to (EXCLUDING FOLDER. the path TO where they are to be extracted)
+    public String extractLocation;//The full folder name the files are extracted to
+    public ArrayList<String> fileNameList;//All filenames from extraction. So this would corespond with the ZIP file identified filenames. need a crawler as well
     public String signType;
 
     // Create a class constructor for the MyClass class
@@ -27,12 +27,32 @@ public class SingleZip {
 
         //filenames = extract(zipName.substring(0,zipName.length()-4)+"folder");
         extractLocation = pathZip + "\\" + fileNameZIP.substring(0, zipName.length() - 4);
-        System.out.println("SF " + grabSF());
-        System.out.println("MF " + grabMF());
+        grabSF();
+        grabMF();
+
+        //POSTSETUP
+
+
+
+        runTests();
+
+
+
+
+
 
     }
 
-    public Boolean[] runTests() {
+    public Boolean[] runTests() {//returns an array of bools coresponding to different tests. true if passed or inapplicable, false if failed.
+        try {
+            ArrayList<String> manifestNames = extractNames(manifestFile);
+            System.out.println("function?");
+            System.out.println(completeXF(manifestFile,manifestNames));
+            System.out.println(completeXF(signatureFile,manifestNames));
+        } catch (Exception e)
+        {
+            System.out.println(e);
+        }
         return null;
     }
 
@@ -43,12 +63,12 @@ public class SingleZip {
 
     public boolean hasMF() {
         //return new File(extractLocation + "\\" + "META-INF" + "\\" + "MANIFEST.MF").isFile();
-        return manifestFile == null;
+        return manifestFile != null;
     }
 
     public boolean hasSF() {
         //return new File(extractLocation + "\\" + "META-INF" + "\\" + "MANIFEST.MF").isFile();
-        return signatureFile == null;
+        return signatureFile != null;
     }
 
 
@@ -62,7 +82,7 @@ public class SingleZip {
             //System.out.println(possible.getName().substring(possible.getName().length() - 3));
             if (possible.getName().substring(possible.getName().length() - 3).equals(".MF")) {
                 if (found) {
-                    System.out.println("Duplicate MFs exist. See " + extractLocation);
+                    System.out.println("Duplicate MFs exist. See " + extractLocation);//This really would be unexpected and pretty weird.
                 } else {
                     found = true;
                     MFFile = possible;
@@ -107,17 +127,20 @@ public class SingleZip {
         return false;
     }
 
-    public boolean completeMF(String MF, ArrayList<String> allNames) //Match the MF records with the actual recovered files
+    public boolean completeXF(File XF, ArrayList<String> allNames) //Match the XF records with a list of filenames (filenames inclusive of META-INF)
     {
         try {
-            BufferedReader br = new BufferedReader(new FileReader(MF));
+            ArrayList<String> namesFromXF = extractNames(XF);
+            ArrayList<String> testNames = new ArrayList<String>();
+            for(String i : allNames)
+            {
+                if(i.length()<"META-INF".length()||!i.substring(0,"META-INF".length()).equals("META-INF"))//Not part of metaINF
+                {
+                    testNames.add(i);
+                }
+            }
 
-            String st;
-            while ((st = br.readLine()) != null)
-                System.out.println(st);
-
-
-            return true;
+            return compareFileList(namesFromXF,testNames);
         }
         catch(Exception e)
 
@@ -127,9 +150,46 @@ public class SingleZip {
         }
     }
 
-    public ArrayList<String> extractNamesMF(String MF)
+    public boolean compareFileList(ArrayList<String> inclusive, ArrayList<String> exclusive)//Names are holdovers, just two arbitrary names both discounting the meta-inf components
     {
-        return null;
+        boolean same = true;
+        for(String i : inclusive)
+        {
+            if(exclusive.indexOf(i)==-1)
+            {
+                System.out.println(i);
+                same = false;
+            }
+        }
+        for(String i : exclusive)
+        {
+            if(inclusive.indexOf(i)==-1)
+            {
+                System.out.println(i);
+                same = false;
+            }
+        }
+        return same;
+    }
+
+    public ArrayList<String> extractNames(File MF) throws IOException //Extracts file names included from either a MF or SF file (originally built for MF but actually works on both)
+    {
+            ArrayList<String> allLines = new ArrayList<String>();
+            BufferedReader br = new BufferedReader(new FileReader(MF));
+
+            String st;
+            while ((st = br.readLine()) != null)
+                allLines.add(st);
+            ArrayList<String> parsedNames = new ArrayList<String>();
+            for(String i : allLines) {
+                if(i.length()>= 6 && i.substring(0,5).equals("Name:"))
+                {
+                    parsedNames.add(i.substring("Name: ".length()));
+                }
+            }
+
+            return parsedNames;
+
     }
 
 
@@ -140,10 +200,6 @@ public class SingleZip {
         return false;
     }
 
-    public boolean completeSF()
-    {
-        return false;
-    }
 
     public boolean matchSFMF(File MF, File SF)
     {
@@ -191,7 +247,6 @@ public class SingleZip {
                     fos.write(buffer, 0, len);
                 }
                 fos.close();
-                //close this ZipEntry
                 zis.closeEntry();
                 ze = zis.getNextEntry();
             }
