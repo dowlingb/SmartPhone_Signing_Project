@@ -1,0 +1,255 @@
+Manifest-Version: 1.0
+Created-By: 1.6.0_24 (Apple Inc.)
+
+Name: res/drawable/all_bricks.png
+SHA1-Digest: paQhUv8H0eTayQmv4AmnQiCoyRg=
+
+Name: res/drawable/castle19.png
+SHA1-Digest: gtRbHcAUOX/oIaOnewKGIuA+ieo=
+
+Name: res/drawable/castle21.png
+SHA1-Digest: Ce+a60W52fy9Wa82L7jDJEyLY84=
+
+Name: res/drawable/battering_ram.png
+SHA1-Digest: zjNtEfCkLMJd/EeHrWxOB7mEoAk=
+
+Name: res/drawable/castle23.png
+SHA1-Digest: W86nd/BztdvqWlvKyGIRoA4NDOU=
+
+Name: res/drawable/scrolls.png
+SHA1-Digest: bMap9O77Cj+74jsuroiRI+rFESI=
+
+Name: res/layout/card.xml
+SHA1-Digest: nbvvSmijgMmkjL0uq8IRe19DPOE=
+
+Name: res/drawable/castle.png
+SHA1-Digest: Zc/dmsfYuPaz/8LHKR4OUBm3/1Q=
+
+Name: res/drawable/castle11.png
+SHA1-Digest: yr8Gbq2N+51Rj7AaH3kQ5RX3IRM=
+
+Name: res/drawable/house.png
+SHA1-Digest: eOnI/J2RLWBstoQUlSQtNTdefGs=
+
+Name: res/drawable/add_weapons.png
+SHA1-Digest: /lQlYSvdy8w/7tvLZlkA53U9sFg=
+
+Name: res/drawable/catapult.png
+SHA1-Digest: UZjYDE86hv+p3BVSMEghMXwW2ks=
+
+Name: res/drawable/castle10.png
+SHA1-Digest: ATvE+xKatu9Q9HMZCl4ShPgW/NE=
+
+Name: res/drawable/wall.png
+SHA1-Digest: EaOtw7PMTAwL/PZq0QKQsV76Dek=
+
+Name: res/drawable/castle_icon.png
+SHA1-Digest: 2OpWLCg1vbDe/WJS+JREI6rDuUg=
+
+Name: res/drawable/app_castle_wars_tile.png
+SHA1-Digest: CMz49iXLlbvXS/Xp9pOFeqRY8YY=
+
+Name: res/layout/wars.xml
+SHA1-Digest: W74UOuXa6kL5CbHY8ZAvuxuqpwQ=
+
+Name: res/drawable/add_scrolls.png
+SHA1-Digest: bMap9O77Cj+74jsuroiRI+rFESI=
+
+Name: res/drawable/knight.png
+SHA1-Digest: eQw+QmSI9HKOj2u7wLLKFFsMkLg=
+
+Name: res/drawable/reverse.png
+SHA1-Digest: 4kx82pUkBcfGxvszQkyGlXgU0Xk=
+
+Name: res/drawable/app_castle_wars.png
+SHA1-Digest: K9Zf6LAk4dpqIlXP9SpOab4q39M=
+
+Name: res/drawable/castle18.png
+SHA1-Digest: jzkSwVMwSNOFNaMbBIULb5Hh4pM=
+
+Name: res/drawable/wall1x.png
+SHA1-Digest: RjoS9UmT6KRq3d7lyIfmakgDQ/U=
+
+Name: res/layout/card_list_item.xml
+SHA1-Digest: I/XwgPjQEbrRKNZeUMnyIet0CPo=
+
+Name: res/drawable/castle28.png
+SHA1-Digest: bOhl7r33F1kBXCYBxFAfaObSe2c=
+
+Name: res/drawable/cannon.png
+SHA1-Digest: g4ZvH7zmN0+6CIP0vs3FZflQsNM=
+
+Name: res/drawable/tavern.png
+SHA1-Digest: ZOPakC4X19hKouHvn85VGFDaSL4=
+
+Name: res/drawable/magic_tower.png
+SHA1-Digest: 5mEc3AvlU9dou9OjEc5GuCnM06M=
+
+Name: res/drawable/builders.png
+SHA1-Digest: qSGDxozcmuuLkrJB7NYo5d7ShuI=
+
+Name: res/drawable/castle16.png
+SHA1-Digest: SwhviuLMN+Py3s6ZAKSNkmdW7xs=
+
+Name: res/layout/stats.xml
+SHA1-Digest: jP636XEYgh+5eLcwtC1ypOYz54o=
+
+Name: res/drawable/citadel.png
+SHA1-Digest: XMTdJYGm2443Ph77xbPQ+U5i180=
+
+Name: res/drawable/wall1.png
+SHA1-Digest: zDI/yS2EjBt99tFPuQJc2m54oGg=
+
+Name: res/drawable/bricks.png
+SHA1-Digest: +e7a/ntIcwVag5HhJ0aIxltHtUc=
+
+Name: res/drawable/weapons.png
+SHA1-Digest: /lQlYSvdy8w/7tvLZlkA53U9sFg=
+
+Name: res/drawable/bomb.png
+SHA1-Digest: 7tCIhPMbpdRG7raTYrPGyHYRkO0=
+
+Name: res/drawable/recruiter.png
+SHA1-Digest: V/W88Sc5hRvQHVKfRWpVFc4fGKM=
+
+Name: res/drawable/castle13.png
+SHA1-Digest: +qyztsBmqgrvFdLg6+YEnAueP0I=
+
+Name: res/drawable/background.png
+SHA1-Digest: C6iNx37Ku2xFtc0P9yN2SkvJkxw=
+
+Name: res/drawable/cancel.png
+SHA1-Digest: 2lxqbqBmC7TOke0bYge3Za2W+KA=
+
+Name: res/drawable/castle14.png
+SHA1-Digest: fsjbeJ6cY6plXUpq/t29NCwFZuQ=
+
+Name: res/drawable/castle15.png
+SHA1-Digest: 4YPKuhqoGenMe+izyj0GdE/NEwo=
+
+Name: res/drawable/discard.png
+SHA1-Digest: 9831P8ZWY72xlSkR5OMIKteFmTk=
+
+Name: res/drawable/confirm.png
+SHA1-Digest: nDWozlo0eIgeMMVagDQAqbLKdqk=
+
+Name: res/drawable/castle24.png
+SHA1-Digest: P3hxTfwul/e3inDEn5IUsfbVaHo=
+
+Name: resources.arsc
+SHA1-Digest: g8xlzN/z3bxtzyaSSUhxLD7bnNU=
+
+Name: res/drawable/platoon.png
+SHA1-Digest: aR9jHIjkBKqEa0SSr1mYQhTdcWk=
+
+Name: res/drawable/magic_wall.png
+SHA1-Digest: XKn0CG6OuDVsDEP6p/c2rr01COA=
+
+Name: res/drawable/add_bricks.png
+SHA1-Digest: +e7a/ntIcwVag5HhJ0aIxltHtUc=
+
+Name: res/drawable/castle17.png
+SHA1-Digest: An/twTG85Bc5piCyLvIY7If2fbM=
+
+Name: res/drawable/tower.png
+SHA1-Digest: zqegeTM7GdpUVoOcQzFliiEL6Gk=
+
+Name: res/drawable/guards.png
+SHA1-Digest: UxPR/iiF2AhCAuOaJKY72+6GRBw=
+
+Name: res/drawable/deserter.png
+SHA1-Digest: d6oRtRuRRJ1O1GPjM0JIDLGJVD0=
+
+Name: res/drawable/quake.png
+SHA1-Digest: jwTJwxAWj6DCR+DcyXngsIydBxk=
+
+Name: res/drawable/large_wall.png
+SHA1-Digest: CgfXJG7w3cVg2Z2MMVAVWj7Lglk=
+
+Name: res/drawable/all_scrolls.png
+SHA1-Digest: kUqj+dCZuLf4+Q+ddL4WQbDSKeE=
+
+Name: res/drawable/lightning.png
+SHA1-Digest: omjq58WxNSTR2Gi2kG+KjY205w4=
+
+Name: AndroidManifest.xml
+SHA1-Digest: Zr7NTzGEg0bkxT/QJFxikCyAxQc=
+
+Name: res/drawable/castle26.png
+SHA1-Digest: 2XBPWwMPaNuWLG/ErjoipNO4yBg=
+
+Name: res/drawable/mages.png
+SHA1-Digest: QnAaKDdR7mhyUnNKUpE1QoJpA5g=
+
+Name: res/drawable/fire_archer.png
+SHA1-Digest: sI/fPzTv9uRxH9VPT0a+8egCDe4=
+
+Name: res/drawable/castle29.png
+SHA1-Digest: mVnrJNcXVyCJ4pJ5d9eFP7Me18Y=
+
+Name: res/drawable/ambush.png
+SHA1-Digest: p/ZlwtD9yBqIY/8DmH724zmx6P4=
+
+Name: res/drawable/builder.png
+SHA1-Digest: 6+IcGKhOnm6wz/rx3Ca4ICymX6w=
+
+Name: res/drawable/fence.png
+SHA1-Digest: 4LR3+N0QxqpGpu6zLuEZbiW4Z04=
+
+Name: res/drawable/castle25.png
+SHA1-Digest: ihFyUvG7uqyb70iHJQux1YYq2+0=
+
+Name: res/drawable/wall2.png
+SHA1-Digest: zDI/yS2EjBt99tFPuQJc2m54oGg=
+
+Name: res/drawable/castle12.png
+SHA1-Digest: W7inmRdC89y8Cyx53Rw8S8YtjoE=
+
+Name: res/drawable/menu.png
+SHA1-Digest: wn/lzz9m+EYZxxDcJi/fmWjR/IY=
+
+Name: res/layout/help.xml
+SHA1-Digest: EKckMaKTMVwwPm52/74DgVZiXtI=
+
+Name: res/drawable/castle22.png
+SHA1-Digest: rcrzz1SoFDprFDd7TBt1aVlN5yQ=
+
+Name: res/drawable/crystals.png
+SHA1-Digest: zgetZz6fZkkLz7JgAWUXf8OerZA=
+
+Name: res/drawable/recruiters.png
+SHA1-Digest: P/QVUhIVAtMst891Wt9GGrKKpGw=
+
+Name: res/drawable/play_again.png
+SHA1-Digest: Iav/l3S8mpDGZjtgk8HfLl/+dMU=
+
+Name: res/layout/card_list.xml
+SHA1-Digest: uVFjcYzI6Cg/OOZQxo8NXdataVM=
+
+Name: classes.dex
+SHA1-Digest: h0tVkT8x+7fBe2DGASp4f2W6V/8=
+
+Name: res/drawable/wall3.png
+SHA1-Digest: zDI/yS2EjBt99tFPuQJc2m54oGg=
+
+Name: res/drawable/wall2x.png
+SHA1-Digest: ZuvmSb0obwHcMh0P4yjDlUKd+Pg=
+
+Name: res/drawable/school.png
+SHA1-Digest: E/2MQuNklhs5iLxTcVh3bIcJRwM=
+
+Name: res/drawable/all_weapons.png
+SHA1-Digest: gLX0L4uGjGSAjBflQK09tz9NKuU=
+
+Name: res/drawable/castle20.png
+SHA1-Digest: QHer4ZYqycfkOBkgNgv0cYbiKmI=
+
+Name: res/drawable/archer.png
+SHA1-Digest: LF0FOpqjnOIglu+xuSHSXLzs+vY=
+
+Name: res/drawable/castle27.png
+SHA1-Digest: ElFWCHF5Rd8Ag1QGEKCw67dojtU=
+
+Name: res/drawable/wizards.png
+SHA1-Digest: SrfVpVeL83E/+ub9Q6rl55tWrOw=
+

@@ -1,0 +1,4 @@
+currency.code = YDF
+currency.symbol = C
+currency.name.singular = Coin
+currency.name.plural = Coins

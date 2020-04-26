@@ -35,7 +35,6 @@ public class SingleZip {
         extractLocation = pathZip + File.separator + fileNameZIP.substring(0, zipName.length() - 4);
         grabSF();
         grabMF();
-
         //POSTSETUP
 
 
@@ -64,7 +63,11 @@ public class SingleZip {
             System.out.println(hasSignature(extractLocation,signatureFile));//V1 bug 7
             System.out.println(groupMismatch(manifestFile,signatureFile));//v1 bug 8
 
-            System.out.println(createSha1Base64(manifestFile));//Basic SHA-1 encoding test for files. worked perfectly
+            System.out.println(correctMF(manifestFile,extractLocation+File.separator));//
+
+            System.out.println(correctSF(manifestFile,signatureFile));
+
+            System.out.println(createBase64(manifestFile,"SHA-1"));//Basic SHA-1 encoding test for files. worked perfectly
 
 
 
@@ -201,22 +204,90 @@ public class SingleZip {
 
 
 
-    public boolean correctMF()//All SHA-1 digests are good to go
+    public boolean correctMF(File MF, String root)throws IOException//All SHA-1 digests are good to go
+    {
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(MF));
+
+            String st;
+            while ((st = br.readLine()) != null)
+            {
+                if(st.length()>= 6 && st.substring(0,5).equals("Name:"))
+                {
+                    String curName = st.substring("Name: ".length());
+                    String hash = br.readLine();
+                    hash = hash.substring("SHA1-Digest: ".length());
+                    File checkFile = new File(root+curName);
+                    String shaDigest = createBase64(checkFile,"SHA-1");
+                    if(!shaDigest.equals(hash))
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }catch (Exception e)
+        {
+            System.out.println(e);
+            return false;
+        }
+
+
+    }
+
+    public boolean correctSF(File MF, File SF)//All SHA-1 digests are good to go, including that of MF. I'm assuming they are ordered
+    {
+        try {
+            BufferedReader brMF = new BufferedReader(new FileReader(MF));
+            BufferedReader brSF = new BufferedReader(new FileReader(SF));
+            String stSF;
+            ArrayList<String> hashesSF = new ArrayList<String>();
+            while ((stSF = brSF.readLine()) != null)
+            {
+                if(stSF.length()>= 6 && stSF.substring(0,5).equals("Name:"))
+                {
+                    String curName = stSF;
+                    String hash = brSF.readLine();
+                    hashesSF.add(hash.substring("SHA1-Digest: ".length()));//Cool now we have the SHA-1 hash
+
+                }
+            }
+            String stMF;
+            ArrayList<String> hashesMF = new ArrayList<String>();
+            while ((stMF = brMF.readLine()) != null)
+            {
+                if(stMF.length()>= 6 && stMF.substring(0,5).equals("Name:"))
+                {
+                    String curName = stMF;
+                    String hash = brMF.readLine();
+                    //System.out.println(curName+"\r\n"+hash+"\r\n\r\n");
+                    hashesMF.add(createBase64(curName+"\r\n"+hash+"\r\n\r\n","SHA-1"));
+                }
+            }
+            for(int i = 0; i<hashesSF.size();i++)
+            {
+                if(!(hashesSF.get(i).equals(hashesMF.get(i))))
+                {
+                    System.out.println(hashesSF.get(i));
+                    System.out.println(hashesMF.get(i));
+                    return false;
+                }
+            }
+
+        }catch (Exception e)
+        {
+            System.out.println(e);
+            return false;
+        }
+        return true;
+    }
+
+    public boolean matchSFMF(File MF, File SF)//this is handled by correctSF. depriciated
     {
         return false;
     }
 
-    public boolean correctSF()//All SHA-1 digests are good to go, including that of MF
-    {
-        return false;
-    }
-
-    public boolean matchSFMF(File MF, File SF)
-    {
-        return false;
-    }
-
-    public boolean matchSignatureSF()
+    public boolean matchSignatureSF() //V1 bug 1.
     {
         return false;
     }
@@ -302,7 +373,7 @@ public class SingleZip {
     public boolean grabMF() {
         File[] possibleFiles = new File(extractLocation + File.separator + "META-INF" + File.separator).listFiles();
         File MFFile;
-        //I want to check if the SF was duplicated or if there are multiple
+        //I want to check if the MF was duplicated or if there are multiple
         boolean found = false;
         for (int i = 0; i < possibleFiles.length; i++) {
             File possible = possibleFiles[i];
@@ -335,7 +406,7 @@ public class SingleZip {
             //System.out.println(possible.getName().substring(possible.getName().length() - 3));
             if (possible.getName().substring(possible.getName().length() - 3).equals(".SF")) {
                 if (found == true) {
-                    System.out.println("Duplicate SFs exist. See " + extractLocation);
+                    //System.out.println("Duplicate SFs exist. See " + extractLocation); // This isn't unexpected behaviour
                 } else {
                     found = true;
                     SFFile = possible;
@@ -358,7 +429,7 @@ public class SingleZip {
         {
             if(exclusive.indexOf(i)==-1)
             {
-                System.out.println(i);
+                //System.out.println(i);
                 same = false;
             }
         }
@@ -366,7 +437,7 @@ public class SingleZip {
         {
             if(inclusive.indexOf(i)==-1)
             {
-                System.out.println(i);
+                //System.out.println(i);
                 same = false;
             }
         }
@@ -393,8 +464,8 @@ public class SingleZip {
 
     }
 
-    public String createSha1Base64(File file) throws Exception  {
-        MessageDigest digest = MessageDigest.getInstance("SHA-1");
+    public String createBase64(File file,String algorithm) throws Exception  {
+        MessageDigest digest = MessageDigest.getInstance(algorithm);
         InputStream fis = new FileInputStream(file);
         int n = 0;
         byte[] buffer = new byte[8192];
@@ -412,7 +483,16 @@ public class SingleZip {
         return new String(base64Encoding);
     }
 
+    public String createBase64(String line,String algorithm) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance(algorithm);
+            byte[] manifestSHA = digest.digest(line.getBytes());
+            byte[] base64Encoding = Base64.getEncoder().encode(manifestSHA);
+            return new String(base64Encoding);
+        } catch (Exception e) {
 
-
+            return null;
+        }
+    }
 
 }
