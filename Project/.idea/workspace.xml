@@ -19,12 +19,12 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="java" value="5652" />
+          <entry key="java" value="6192" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="5652" />
+          <entry key="JAVA" value="6192" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -55,22 +55,19 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/company/SingleZip.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3145">
-              <caret line="185" column="66" lean-forward="true" selection-start-line="185" selection-start-column="66" selection-end-line="185" selection-end-column="66" />
+            <state relative-caret-position="357">
+              <caret line="117" column="59" selection-start-line="117" selection-start-column="59" selection-end-line="117" selection-end-column="59" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#5626#5627#0" expanded="true" />
-                <element signature="e#5664#5665#0" expanded="true" />
+                <element signature="e#6970#6978#0" expanded="true" />
                 <element signature="e#4676#4684#0" expanded="true" />
-                <element signature="e#4264#4272#0" expanded="true" />
-                <element signature="e#4509#4517#0" expanded="true" />
-                <element signature="e#9237#9238#0" expanded="true" />
-                <element signature="e#9265#9266#0" expanded="true" />
-                <element signature="e#9310#9311#0" expanded="true" />
-                <element signature="e#9338#9339#0" expanded="true" />
-                <element signature="e#9393#9394#0" expanded="true" />
-                <element signature="e#9421#9422#0" expanded="true" />
+                <element signature="e#9683#9684#0" expanded="true" />
+                <element signature="e#9711#9712#0" expanded="true" />
+                <element signature="e#9756#9757#0" expanded="true" />
+                <element signature="e#9784#9785#0" expanded="true" />
                 <element signature="e#3618#3626#0" expanded="true" />
+                <element signature="e#12379#12387#0" expanded="true" />
+                <element signature="e#12627#12635#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -147,7 +144,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1587868443748" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1587869894322" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -249,22 +246,19 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/company/SingleZip.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3145">
-          <caret line="185" column="66" lean-forward="true" selection-start-line="185" selection-start-column="66" selection-end-line="185" selection-end-column="66" />
+        <state relative-caret-position="357">
+          <caret line="117" column="59" selection-start-line="117" selection-start-column="59" selection-end-line="117" selection-end-column="59" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#5626#5627#0" expanded="true" />
-            <element signature="e#5664#5665#0" expanded="true" />
+            <element signature="e#6970#6978#0" expanded="true" />
             <element signature="e#4676#4684#0" expanded="true" />
-            <element signature="e#4264#4272#0" expanded="true" />
-            <element signature="e#4509#4517#0" expanded="true" />
-            <element signature="e#9237#9238#0" expanded="true" />
-            <element signature="e#9265#9266#0" expanded="true" />
-            <element signature="e#9310#9311#0" expanded="true" />
-            <element signature="e#9338#9339#0" expanded="true" />
-            <element signature="e#9393#9394#0" expanded="true" />
-            <element signature="e#9421#9422#0" expanded="true" />
+            <element signature="e#9683#9684#0" expanded="true" />
+            <element signature="e#9711#9712#0" expanded="true" />
+            <element signature="e#9756#9757#0" expanded="true" />
+            <element signature="e#9784#9785#0" expanded="true" />
             <element signature="e#3618#3626#0" expanded="true" />
+            <element signature="e#12379#12387#0" expanded="true" />
+            <element signature="e#12627#12635#0" expanded="true" />
           </folding>
         </state>
       </provider>

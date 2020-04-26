@@ -5,6 +5,9 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class SingleZip {
     public String fileNameZIP;//The ZIP filename we are working off of
@@ -46,12 +49,21 @@ public class SingleZip {
 
     public Boolean[] runTests() {//returns an array of bools coresponding to different tests. true if passed or inapplicable, false if failed.
         try {
-            ArrayList<String> manifestNames = extractNames(manifestFile);
+            ArrayList<String> manifestNames = extractNames(manifestFile);//Might be handy. who knows tbh
             System.out.println("function?");
-            System.out.println(completeXF(manifestFile,manifestNames));
-            System.out.println(completeXF(signatureFile,manifestNames));
-            System.out.println(checkMETAINFSafe(extractLocation));
-            System.out.println(groupMismatch(manifestFile,signatureFile));
+            System.out.println(checkExtract());//zip bug 2
+            System.out.println(attack1(fileNameList));//attack 1
+            System.out.println(completeXF(manifestFile,fileNameList));//attack 2? i mean technically
+            System.out.println(completeXF(signatureFile,fileNameList));//attack 2 as well? i mean technically
+            System.out.println(checkMETAINFSafe(extractLocation)); //vul 2
+            System.out.println(hasSF());//v1 bug 3 (component)
+            System.out.println(completeXF(manifestFile,fileNameList));//v1 bug 4
+            System.out.println(hasMF());//v1 bug 5
+            System.out.println(hasSignature(extractLocation,signatureFile));//V1 bug 7
+            System.out.println(groupMismatch(manifestFile,signatureFile));//v1 bug 8
+
+
+
         } catch (Exception e)
         {
             System.out.println(e);
@@ -98,58 +110,23 @@ public class SingleZip {
     }
 
 
-    public boolean grabMF() {
-        File[] possibleFiles = new File(extractLocation + File.separator + "META-INF" + File.separator).listFiles();
-        File MFFile;
-        //I want to check if the SF was duplicated or if there are multiple
-        boolean found = false;
-        for (int i = 0; i < possibleFiles.length; i++) {
-            File possible = possibleFiles[i];
-            //System.out.println(possible.getName().substring(possible.getName().length() - 3));
-            if (possible.getName().substring(possible.getName().length() - 3).equals(".MF")) {
-                if (found) {
-                    System.out.println("Duplicate MFs exist. See " + extractLocation);//This really would be unexpected and pretty weird.
-                } else {
-                    found = true;
-                    MFFile = possible;
-                    manifestFile = possible;
-                }
 
+    public boolean hasSignature(String baseFolder,File SF) {//V1 bug 7. also as far as v1 bug 1 is going sadly due to time
+        File[] listOFiles = new File(baseFolder+File.separator+"META-INF").listFiles();
+        String curFile = "not a real file extension";
+
+        String certName = SF.getName();
+        certName=certName.substring(0,certName.length()-3);
+        for(File f: listOFiles)
+        {
+            curFile = f.getName();
+
+            if(curFile.equals(certName+".RSA")||curFile.equals(certName+".DSA")||curFile.equals(certName+".EC"))
+            {
+
+                return true;
             }
-
         }
-
-
-        return found;
-    }
-
-
-    public boolean grabSF() {
-        File[] possibleFiles = new File(extractLocation + File.separator + "META-INF" + File.separator).listFiles();
-        File SFFile;
-        //I want to check if the SF was duplicated or if there are multiple
-        boolean found = false;
-        for (int i = 0; i < possibleFiles.length; i++) {
-            File possible = possibleFiles[i];
-            //System.out.println(possible.getName().substring(possible.getName().length() - 3));
-            if (possible.getName().substring(possible.getName().length() - 3).equals(".SF")) {
-                if (found == true) {
-                    System.out.println("Duplicate SFs exist. See " + extractLocation);
-                } else {
-                    found = true;
-                    SFFile = possible;
-                    signatureFile = possible;
-                }
-
-            }
-
-        }
-
-
-        return found;
-    }
-
-    public boolean hasSignature() {//V1 bug 7. also as far as v1 bug 1 is going sadly due to time
         return false;
     }
 
@@ -189,9 +166,10 @@ public class SingleZip {
         return null;
     }
 
-    public boolean attack1(ArrayList<String> zipIndicatedFiles)//Any double files? attack 1. Simple filename duplicate checker
+    public boolean attack1(ArrayList<String> zipIndicatedFiles)//Any double files? attack 1. Simple filename duplicate checker. dump the files see if there are dupes.
     {
-        return false;
+        Set<String> uniqueSet = new HashSet<String>(zipIndicatedFiles);
+        return !(uniqueSet.size()<zipIndicatedFiles.size()); //Wow. look at that condensed code
     }
 
     public boolean completeXF(File XF, ArrayList<String> allNames) //Match the XF records with a list of filenames (filenames inclusive of META-INF). Fundamentally Attack 2 and also v1 bugs 3,4 but not including digest yet
@@ -217,47 +195,6 @@ public class SingleZip {
         }
     }
 
-    public boolean compareFileList(ArrayList<String> inclusive, ArrayList<String> exclusive)//Names are holdovers, just two arbitrary names both discounting the meta-inf components. used for V1 bugs 2,3,4
-    {
-        boolean same = true;
-        for(String i : inclusive)
-        {
-            if(exclusive.indexOf(i)==-1)
-            {
-                System.out.println(i);
-                same = false;
-            }
-        }
-        for(String i : exclusive)
-        {
-            if(inclusive.indexOf(i)==-1)
-            {
-                System.out.println(i);
-                same = false;
-            }
-        }
-        return same;
-    }
-
-    public ArrayList<String> extractNames(File MF) throws IOException //Extracts file names included from either a MF or SF file (originally built for MF but actually works on both)
-    {
-            ArrayList<String> allLines = new ArrayList<String>();
-            BufferedReader br = new BufferedReader(new FileReader(MF));
-
-            String st;
-            while ((st = br.readLine()) != null)
-                allLines.add(st);
-            ArrayList<String> parsedNames = new ArrayList<String>();
-            for(String i : allLines) {
-                if(i.length()>= 6 && i.substring(0,5).equals("Name:"))
-                {
-                    parsedNames.add(i.substring("Name: ".length()));
-                }
-            }
-            br.close();
-            return parsedNames;
-
-    }
 
 
 
@@ -282,10 +219,26 @@ public class SingleZip {
         return false;
     }
 
-    public boolean difSigners(File MF, File SF)
-    {
-        return false;
-    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //UTILITY STUFF
+
+
+
+
 
     private ArrayList<String> unzip(String zipFilePath, String destDir) {
         File dir = new File(destDir);
@@ -341,4 +294,100 @@ public class SingleZip {
 
     }
 
+
+
+
+    public boolean grabMF() {
+        File[] possibleFiles = new File(extractLocation + File.separator + "META-INF" + File.separator).listFiles();
+        File MFFile;
+        //I want to check if the SF was duplicated or if there are multiple
+        boolean found = false;
+        for (int i = 0; i < possibleFiles.length; i++) {
+            File possible = possibleFiles[i];
+            //System.out.println(possible.getName().substring(possible.getName().length() - 3));
+            if (possible.getName().substring(possible.getName().length() - 3).equals(".MF")) {
+                if (found) {
+                    System.out.println("Duplicate MFs exist. See " + extractLocation);//This really would be unexpected and pretty weird.
+                } else {
+                    found = true;
+                    MFFile = possible;
+                    manifestFile = possible;
+                }
+
+            }
+
+        }
+
+
+        return found;
+    }
+
+
+    public boolean grabSF() {
+        File[] possibleFiles = new File(extractLocation + File.separator + "META-INF" + File.separator).listFiles();
+        File SFFile;
+        //I want to check if the SF was duplicated or if there are multiple
+        boolean found = false;
+        for (int i = 0; i < possibleFiles.length; i++) {
+            File possible = possibleFiles[i];
+            //System.out.println(possible.getName().substring(possible.getName().length() - 3));
+            if (possible.getName().substring(possible.getName().length() - 3).equals(".SF")) {
+                if (found == true) {
+                    System.out.println("Duplicate SFs exist. See " + extractLocation);
+                } else {
+                    found = true;
+                    SFFile = possible;
+                    signatureFile = possible;
+                }
+
+            }
+
+        }
+
+
+        return found;
+    }
+
+
+    public boolean compareFileList(ArrayList<String> inclusive, ArrayList<String> exclusive)//Names are holdovers, just two arbitrary names both discounting the meta-inf components. used for V1 bugs 2,3,4
+    {
+        boolean same = true;
+        for(String i : inclusive)
+        {
+            if(exclusive.indexOf(i)==-1)
+            {
+                System.out.println(i);
+                same = false;
+            }
+        }
+        for(String i : exclusive)
+        {
+            if(inclusive.indexOf(i)==-1)
+            {
+                System.out.println(i);
+                same = false;
+            }
+        }
+        return same;
+    }
+
+    public ArrayList<String> extractNames(File MF) throws IOException //Extracts file names included from either a MF or SF file (originally built for MF but actually works on both)
+    {
+        ArrayList<String> allLines = new ArrayList<String>();
+        BufferedReader br = new BufferedReader(new FileReader(MF));
+
+        String st;
+        while ((st = br.readLine()) != null)
+            allLines.add(st);
+        ArrayList<String> parsedNames = new ArrayList<String>();
+        for(String i : allLines) {
+            if(i.length()>= 6 && i.substring(0,5).equals("Name:"))
+            {
+                parsedNames.add(i.substring("Name: ".length()));
+            }
+        }
+        br.close();
+        return parsedNames;
+
+    }
 }
