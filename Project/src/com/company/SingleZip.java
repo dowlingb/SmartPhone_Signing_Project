@@ -37,6 +37,7 @@ public class SingleZip {
         grabMF();
         //POSTSETUP
 
+        //nothin much to do here anymore
 
 
 
@@ -51,28 +52,31 @@ public class SingleZip {
     public Boolean[] runTests() {//returns an array of bools coresponding to different tests. true if passed or inapplicable, false if failed.
         try {
             ArrayList<String> manifestNames = extractNames(manifestFile);//Might be handy. who knows tbh
-            System.out.println("function?");
+           // System.out.println("function?");
             System.out.println(checkExtract());//zip bug 2
             System.out.println(attack1(fileNameList));//attack 1
             System.out.println(completeXF(manifestFile,fileNameList));//attack 2? i mean technically
             System.out.println(completeXF(signatureFile,fileNameList));//attack 2 as well? i mean technically
             System.out.println(checkMETAINFSafe(extractLocation)); //vul 2
+            System.out.println(correctSF(manifestFile,signatureFile));//v1bug 2
             System.out.println(hasSF());//v1 bug 3 (component)
             System.out.println(completeXF(manifestFile,fileNameList));//v1 bug 4
             System.out.println(hasMF());//v1 bug 5
+            System.out.println(correctMF(manifestFile,extractLocation+File.separator));//v1bug 6
             System.out.println(hasSignature(extractLocation,signatureFile));//V1 bug 7
             System.out.println(groupMismatch(manifestFile,signatureFile));//v1 bug 8
 
-            System.out.println(correctMF(manifestFile,extractLocation+File.separator));//
 
-            System.out.println(correctSF(manifestFile,signatureFile));
 
-            System.out.println(createBase64(manifestFile,"SHA-1"));//Basic SHA-1 encoding test for files. worked perfectly
+
+
+           // System.out.println(createBase64(manifestFile,"SHA-1"));//Basic SHA-1 encoding test for files. worked perfectly
 
 
 
         } catch (Exception e)
         {
+            System.out.println(fileNameZIP);
             System.out.println(e);
         }
         return null;
@@ -235,7 +239,7 @@ public class SingleZip {
 
     }
 
-    public boolean correctSF(File MF, File SF)//All SHA-1 digests are good to go, including that of MF. I'm assuming they are ordered
+    public boolean correctSF(File MF, File SF)//All SHA-1 digests are good to go, including that of MF.
     {
         try {
             BufferedReader brMF = new BufferedReader(new FileReader(MF));
@@ -266,10 +270,9 @@ public class SingleZip {
             }
             for(int i = 0; i<hashesSF.size();i++)
             {
-                if(!(hashesSF.get(i).equals(hashesMF.get(i))))
+                if(!(hashesSF.contains(hashesMF.get(i))))
                 {
-                    System.out.println(hashesSF.get(i));
-                    System.out.println(hashesMF.get(i));
+                    //System.out.println(hashesMF.get(i));
                     return false;
                 }
             }

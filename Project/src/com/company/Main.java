@@ -1,5 +1,6 @@
 package com.company;
 
+import java.io.File;
 import java.security.MessageDigest;
 import java.util.Base64;
 
@@ -25,10 +26,13 @@ public class Main {
 //        {
 //
 //        }
+        File[] listOFiles = new File(args[0]).listFiles();
 
-        SingleZip test = new SingleZip(args[1],args[0]);
-        test.runTests();
-
+        for(File f: listOFiles) {
+            System.out.println(f.getName());
+            SingleZip test = new SingleZip(f.getName(), args[0]);
+            test.runTests();
+        }
 
 
         //System.out.println(test.checkExtract());
