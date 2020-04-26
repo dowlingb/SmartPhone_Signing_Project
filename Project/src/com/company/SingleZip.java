@@ -8,6 +8,8 @@ import java.util.zip.ZipInputStream;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.Base64;
+import java.security.MessageDigest;
 
 public class SingleZip {
     public String fileNameZIP;//The ZIP filename we are working off of
@@ -61,6 +63,8 @@ public class SingleZip {
             System.out.println(hasMF());//v1 bug 5
             System.out.println(hasSignature(extractLocation,signatureFile));//V1 bug 7
             System.out.println(groupMismatch(manifestFile,signatureFile));//v1 bug 8
+
+            System.out.println(createSha1Base64(manifestFile));//Basic SHA-1 encoding test for files. worked perfectly
 
 
 
@@ -388,4 +392,27 @@ public class SingleZip {
         return parsedNames;
 
     }
+
+    public String createSha1Base64(File file) throws Exception  {
+        MessageDigest digest = MessageDigest.getInstance("SHA-1");
+        InputStream fis = new FileInputStream(file);
+        int n = 0;
+        byte[] buffer = new byte[8192];
+        while (n != -1) {
+            n = fis.read(buffer);
+            if (n > 0) {
+                digest.update(buffer, 0, n);
+            }
+        }
+        byte[] manifestSHA  = digest.digest();
+
+
+        byte[] base64Encoding = Base64.getEncoder().encode(manifestSHA);
+
+        return new String(base64Encoding);
+    }
+
+
+
+
 }
