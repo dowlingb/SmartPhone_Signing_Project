@@ -38,7 +38,7 @@ public class SingleZip {
 
 
 
-        runTests();
+
 
 
 
@@ -133,9 +133,7 @@ public class SingleZip {
     public boolean groupMismatch(File SF, File MF) {//V1 bug 8
         try {
             String SFGroup = grabGroup(SF);
-            System.out.println(SFGroup);
             String MFGroup = grabGroup(MF);
-            System.out.println(MFGroup);
             if(MFGroup.equals(SFGroup))
             {
                 return true;

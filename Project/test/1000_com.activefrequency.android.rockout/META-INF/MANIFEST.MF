@@ -1,0 +1,63 @@
+Manifest-Version: 1.0
+Created-By: 1.0 (Android)
+
+Name: res/raw/e_5_open_small.ogg
+SHA1-Digest: sYEaEipZwyAPCGvSU6YibUDYuhk=
+
+Name: res/raw/g_maj_up_small.ogg
+SHA1-Digest: zdhsKEiuaSWlK056kPiGHwHmBcM=
+
+Name: res/raw/d_5_open_small.ogg
+SHA1-Digest: 04kYrYfnmu6DzbTPh0b8Bi2cczM=
+
+Name: res/raw/g_maj_down_small.ogg
+SHA1-Digest: UkcENbrpSsqo2H0AvGd+ogy0ko8=
+
+Name: AndroidManifest.xml
+SHA1-Digest: osaTjoMNf9Vk8VD2Hpxf2ma3IQc=
+
+Name: res/raw/c_maj_up_small.ogg
+SHA1-Digest: Pop75LlSjyItqaMAI5Jt630PnYs=
+
+Name: res/drawable/electric.jpg
+SHA1-Digest: F5O4X8z7ZPWC35BcRXA+9I3/LLM=
+
+Name: res/raw/d_maj_up_small.ogg
+SHA1-Digest: fxh/vk/IwiwqQEdoQHYgxT50/Ws=
+
+Name: res/drawable/semihollow.jpg
+SHA1-Digest: pbMXVDJ3C5cJx2rWW8OUbmcXDQY=
+
+Name: res/raw/a_5_muted_small.ogg
+SHA1-Digest: KG6VTs6Szi7k+f5ksr3WigS6+J0=
+
+Name: resources.arsc
+SHA1-Digest: NU9ykpHY/0LOwK8dmY8KTPF7wgs=
+
+Name: res/raw/e_5_muted_small.ogg
+SHA1-Digest: U1+QnqbPQM6PdOKwIfSel+iuRj8=
+
+Name: res/raw/c_maj_down_small.ogg
+SHA1-Digest: pjizAihBCxXT/ebVQT1KX47b7ew=
+
+Name: res/raw/d_5_muted_small.ogg
+SHA1-Digest: GZGvRHej91Z+bSh7dMm8EppdHC8=
+
+Name: res/raw/d_maj_down_small.ogg
+SHA1-Digest: 4f5DAopWLKXNg3mCu5SU8B17drY=
+
+Name: res/raw/a_5_open_small.ogg
+SHA1-Digest: T+hcVWGEp6XDHQF0nVIrh1/4Pso=
+
+Name: res/drawable/icon.png
+SHA1-Digest: oRQ8K5kPej92y0942rZddq+LYHA=
+
+Name: classes.dex
+SHA1-Digest: R3yJau3OSrdsyLnnSblopvIXj8o=
+
+Name: res/layout/main.xml
+SHA1-Digest: lMc4JqFR/wWLvzaeK+dM7KIUC0w=
+
+Name: res/drawable/ic_menu_add_sound.png
+SHA1-Digest: qs9wz98kayWweB3pa4kjXlus1u0=
+
