@@ -1,5 +1,6 @@
 package com.company;
 
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.zip.ZipEntry;
@@ -22,11 +23,11 @@ public class SingleZip {
     public SingleZip(String zipName, String pathName) {//ZIPNAME is simply the APK/ZIP file name and pathName is the folder path
         pathZip = pathName;
         fileNameZIP = zipName;  // Set the initial value for the class attribute x
-        fileNameList = unzip(pathZip + "\\" + fileNameZIP, pathZip + "\\" + fileNameZIP.substring(0, zipName.length() - 4));
+        fileNameList = unzip(pathZip + File.separator + fileNameZIP, pathZip + File.separator + fileNameZIP.substring(0, zipName.length() - 4));
         //CHECK IF ZIP EXTRACT FAILED
 
         //filenames = extract(zipName.substring(0,zipName.length()-4)+"folder");
-        extractLocation = pathZip + "\\" + fileNameZIP.substring(0, zipName.length() - 4);
+        extractLocation = pathZip + File.separator + fileNameZIP.substring(0, zipName.length() - 4);
         grabSF();
         grabMF();
 
@@ -49,6 +50,8 @@ public class SingleZip {
             System.out.println("function?");
             System.out.println(completeXF(manifestFile,manifestNames));
             System.out.println(completeXF(signatureFile,manifestNames));
+            System.out.println(checkMETAINFSafe(extractLocation));
+            System.out.println(groupMismatch(manifestFile,signatureFile));
         } catch (Exception e)
         {
             System.out.println(e);
@@ -57,23 +60,46 @@ public class SingleZip {
     }
 
 
-    public boolean checkExtract() {
+    public boolean checkExtract() //Zip bug 2
+    {
         return extracted;
     }
 
-    public boolean hasMF() {
-        //return new File(extractLocation + "\\" + "META-INF" + "\\" + "MANIFEST.MF").isFile();
+    public boolean checkMETAINFSafe(String baseFolder)//Vul-2. This combined with the other verifications indicates if there is anything unwanted in META-INF.
+    // Let's also address that this is a pretty loose check and is just looking for things we DONT expect
+            //This wouldn't actually stop something from renaming an arbitrary file as X.MF or X.SF or X.RSA and then using it as whatever.
+    {
+        File[] listOFiles = new File(baseFolder+File.separator+"META-INF").listFiles();
+        String ext = "not a real file extension";
+        for(File f: listOFiles)
+        {
+            int i = f.getName().lastIndexOf('.');
+            if (i > 0) {
+                ext= f.getName().substring(i+1);
+            }
+            if(!(ext.equals("MF")||ext.equals("SF")||ext.equals("RSA")||ext.equals("DSA")||ext.equals("EC")||ext.equals("")))
+            {
+
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean hasMF()//V1 bug 5 technically? its listed differently
+    {
+        //return new File(extractLocation + File.separator + "META-INF" + File.separator + "MANIFEST.MF").isFile();
         return manifestFile != null;
     }
 
-    public boolean hasSF() {
-        //return new File(extractLocation + "\\" + "META-INF" + "\\" + "MANIFEST.MF").isFile();
+    public boolean hasSF() {//V1 bug 3 partial
+        //return new File(extractLocation + File.separator + "META-INF" + File.separator + "MANIFEST.MF").isFile();
         return signatureFile != null;
     }
 
 
     public boolean grabMF() {
-        File[] possibleFiles = new File(extractLocation + "\\" + "META-INF" + "\\").listFiles();
+        File[] possibleFiles = new File(extractLocation + File.separator + "META-INF" + File.separator).listFiles();
         File MFFile;
         //I want to check if the SF was duplicated or if there are multiple
         boolean found = false;
@@ -99,7 +125,7 @@ public class SingleZip {
 
 
     public boolean grabSF() {
-        File[] possibleFiles = new File(extractLocation + "\\" + "META-INF" + "\\").listFiles();
+        File[] possibleFiles = new File(extractLocation + File.separator + "META-INF" + File.separator).listFiles();
         File SFFile;
         //I want to check if the SF was duplicated or if there are multiple
         boolean found = false;
@@ -123,11 +149,52 @@ public class SingleZip {
         return found;
     }
 
-    public boolean hasSignature() {
+    public boolean hasSignature() {//V1 bug 7. also as far as v1 bug 1 is going sadly due to time
         return false;
     }
 
-    public boolean completeXF(File XF, ArrayList<String> allNames) //Match the XF records with a list of filenames (filenames inclusive of META-INF)
+    public boolean groupMismatch(File SF, File MF) {//V1 bug 8
+        try {
+            String SFGroup = grabGroup(SF);
+            System.out.println(SFGroup);
+            String MFGroup = grabGroup(MF);
+            System.out.println(MFGroup);
+            if(MFGroup.equals(SFGroup))
+            {
+                return true;
+            }
+        }
+        catch (Exception e)//Something failed. it didn't pass the test
+        {
+            System.out.println(e);
+            return false;
+        }
+
+
+        return false;
+    }
+
+    public String grabGroup(File XF) throws IOException
+    {
+        BufferedReader br = new BufferedReader(new FileReader(XF));
+
+        String st;
+        while ((st = br.readLine()) != null)
+        {
+            if(st.length()>11 && st.substring(0,11).equals("Created-By:"))
+            {
+                return st;//I gave it a thought.... We can just compare the whole thing
+            }
+        }
+        return null;
+    }
+
+    public boolean attack1(ArrayList<String> zipIndicatedFiles)//Any double files? attack 1. Simple filename duplicate checker
+    {
+        return false;
+    }
+
+    public boolean completeXF(File XF, ArrayList<String> allNames) //Match the XF records with a list of filenames (filenames inclusive of META-INF). Fundamentally Attack 2 and also v1 bugs 3,4 but not including digest yet
     {
         try {
             ArrayList<String> namesFromXF = extractNames(XF);
@@ -150,7 +217,7 @@ public class SingleZip {
         }
     }
 
-    public boolean compareFileList(ArrayList<String> inclusive, ArrayList<String> exclusive)//Names are holdovers, just two arbitrary names both discounting the meta-inf components
+    public boolean compareFileList(ArrayList<String> inclusive, ArrayList<String> exclusive)//Names are holdovers, just two arbitrary names both discounting the meta-inf components. used for V1 bugs 2,3,4
     {
         boolean same = true;
         for(String i : inclusive)
@@ -187,7 +254,7 @@ public class SingleZip {
                     parsedNames.add(i.substring("Name: ".length()));
                 }
             }
-
+            br.close();
             return parsedNames;
 
     }
@@ -195,11 +262,15 @@ public class SingleZip {
 
 
 
-    public boolean correctMF()
+    public boolean correctMF()//All SHA-1 digests are good to go
     {
         return false;
     }
 
+    public boolean correctSF()//All SHA-1 digests are good to go, including that of MF
+    {
+        return false;
+    }
 
     public boolean matchSFMF(File MF, File SF)
     {
