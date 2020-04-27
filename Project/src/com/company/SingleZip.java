@@ -30,11 +30,17 @@ public class SingleZip {
         fileNameZIP = zipName;  // Set the initial value for the class attribute x
         fileNameList = unzip(pathZip + File.separator + fileNameZIP, pathZip + File.separator + fileNameZIP.substring(0, zipName.length() - 4));
         //CHECK IF ZIP EXTRACT FAILED
-
-        //filenames = extract(zipName.substring(0,zipName.length()-4)+"folder");
         extractLocation = pathZip + File.separator + fileNameZIP.substring(0, zipName.length() - 4);
-        grabSF();
-        grabMF();
+        //filenames = extract(zipName.substring(0,zipName.length()-4)+"folder");
+        try {
+            grabSF();//this will lead to basically everything failing
+            grabMF();
+        }
+        catch (Exception e)
+        {
+            System.out.println(fileNameZIP);
+            System.out.println(e);
+        }
         //POSTSETUP
 
         //nothin much to do here anymore
@@ -49,22 +55,36 @@ public class SingleZip {
 
     }
 
-    public Boolean[] runTests() {//returns an array of bools coresponding to different tests. true if passed or inapplicable, false if failed.
+    public boolean[] runTests() {//returns an array of bools coresponding to different tests. true if passed or inapplicable, false if failed.
         try {
             ArrayList<String> manifestNames = extractNames(manifestFile);//Might be handy. who knows tbh
            // System.out.println("function?");
-            System.out.println(checkExtract());//zip bug 2
-            System.out.println(attack1(fileNameList));//attack 1
-            System.out.println(completeXF(manifestFile,fileNameList));//attack 2? i mean technically
-            System.out.println(completeXF(signatureFile,fileNameList));//attack 2 as well? i mean technically
-            System.out.println(checkMETAINFSafe(extractLocation)); //vul 2
-            System.out.println(correctSF(manifestFile,signatureFile));//v1bug 2
-            System.out.println(hasSF());//v1 bug 3 (component)
-            System.out.println(completeXF(manifestFile,fileNameList));//v1 bug 4
-            System.out.println(hasMF());//v1 bug 5
-            System.out.println(correctMF(manifestFile,extractLocation+File.separator));//v1bug 6
-            System.out.println(hasSignature(extractLocation,signatureFile));//V1 bug 7
-            System.out.println(groupMismatch(manifestFile,signatureFile));//v1 bug 8
+            boolean[] results = new boolean[12];
+            results[0] = checkExtract();
+            results[1] = attack1(fileNameList);
+            results[2] = completeXF(manifestFile,fileNameList);
+            results[3] = completeXF(signatureFile,fileNameList);
+            results[4] = checkMETAINFSafe(extractLocation);
+            results[5] =correctSF(manifestFile,signatureFile);
+            results[6] = hasSF();
+            results[7] =completeXF(manifestFile,fileNameList);
+            results[8] =hasMF();
+            results[9] = correctMF(manifestFile,extractLocation+File.separator);
+            results[10] = hasSignature(extractLocation,signatureFile);
+            results[11]= groupMismatch(manifestFile,signatureFile);
+            return results;
+//            System.out.println(checkExtract());//zip bug 2
+//            System.out.println(attack1(fileNameList));//attack 1
+//            System.out.println(completeXF(manifestFile,fileNameList));//attack 2? i mean technically
+//            System.out.println(completeXF(signatureFile,fileNameList));//attack 2 as well? i mean technically
+//            System.out.println(checkMETAINFSafe(extractLocation)); //vul 2
+//            System.out.println(correctSF(manifestFile,signatureFile));//v1bug 2
+//            System.out.println(hasSF());//v1 bug 3 (component)
+//            System.out.println(completeXF(manifestFile,fileNameList));//v1 bug 4
+//            System.out.println(hasMF());//v1 bug 5
+//            System.out.println(correctMF(manifestFile,extractLocation+File.separator));//v1bug 6
+//            System.out.println(hasSignature(extractLocation,signatureFile));//V1 bug 7
+//            System.out.println(groupMismatch(manifestFile,signatureFile));//v1 bug 8
 
 
 
