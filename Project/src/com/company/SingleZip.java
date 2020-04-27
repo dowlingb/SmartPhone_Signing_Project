@@ -219,14 +219,30 @@ public class SingleZip {
                 if(st.length()>= 6 && st.substring(0,5).equals("Name:"))
                 {
                     String curName = st.substring("Name: ".length());
-                    String hash = br.readLine();
-                    hash = hash.substring("SHA1-Digest: ".length());
-                    File checkFile = new File(root+curName);
-                    String shaDigest = createBase64(checkFile,"SHA-1");
-                    if(!shaDigest.equals(hash))
+                    String second = br.readLine();
+                    if(second.length()>= 13 && second.substring(0,"SHA1-Digest: ".length()).equals("SHA1-Digest: "))
                     {
-                        return false;
+                        second = second.substring("SHA1-Digest: ".length());
+                        File checkFile = new File(root+curName);
+                        String shaDigest = createBase64(checkFile,"SHA-1");
+                        if(!shaDigest.equals(second))
+                        {
+                            return false;
+                        }
                     }
+                    else
+                    {
+                        curName= curName+second.trim();
+                        String hash = br.readLine();
+                        hash = hash.substring("SHA1-Digest: ".length());
+                        File checkFile = new File(root+curName);
+                        String shaDigest = createBase64(checkFile,"SHA-1");
+                        if(!shaDigest.equals(hash))
+                        {
+                            return false;
+                        }
+                    }
+
                 }
             }
             return true;
@@ -248,10 +264,9 @@ public class SingleZip {
             ArrayList<String> hashesSF = new ArrayList<String>();
             while ((stSF = brSF.readLine()) != null)
             {
-                if(stSF.length()>= 6 && stSF.substring(0,5).equals("Name:"))
+                if(stSF.length()>= 13 && stSF.substring(0,"SHA1-Digest: ".length()).equals("SHA1-Digest: "))
                 {
-                    String curName = stSF;
-                    String hash = brSF.readLine();
+                    String hash = stSF;
                     hashesSF.add(hash.substring("SHA1-Digest: ".length()));//Cool now we have the SHA-1 hash
 
                 }
@@ -263,9 +278,18 @@ public class SingleZip {
                 if(stMF.length()>= 6 && stMF.substring(0,5).equals("Name:"))
                 {
                     String curName = stMF;
-                    String hash = brMF.readLine();
+                    String second = brMF.readLine();
+                    if(second.length()>= 13 && second.substring(0,"SHA1-Digest: ".length()).equals("SHA1-Digest: "))
+                    {
+                        hashesMF.add(createBase64(curName+"\r\n"+second+"\r\n\r\n","SHA-1"));
+                    }
+                    else
+                    {
+                        String third = brMF.readLine();
+                        hashesMF.add(createBase64(curName+"\r\n"+second+"\r\n"+third+"\r\n\r\n","SHA-1"));
+                    }
                     //System.out.println(curName+"\r\n"+hash+"\r\n\r\n");
-                    hashesMF.add(createBase64(curName+"\r\n"+hash+"\r\n\r\n","SHA-1"));
+
                 }
             }
             for(int i = 0; i<hashesSF.size();i++)
@@ -276,10 +300,14 @@ public class SingleZip {
                     return false;
                 }
             }
+            if(hashesSF.size()!=hashesMF.size())
+            {
+                return false;
+            }
 
         }catch (Exception e)
         {
-            System.out.println(e);
+            System.out.println(e.getStackTrace());
             return false;
         }
         return true;
@@ -454,16 +482,30 @@ public class SingleZip {
 
         String st;
         while ((st = br.readLine()) != null)
-            allLines.add(st);
-        ArrayList<String> parsedNames = new ArrayList<String>();
-        for(String i : allLines) {
-            if(i.length()>= 6 && i.substring(0,5).equals("Name:"))
+        {
+            if(st.length()>= 6 && st.substring(0,5).equals("Name:"))
             {
-                parsedNames.add(i.substring("Name: ".length()));
+                String cur = st.substring("Name: ".length());
+                String possible = br.readLine();
+                if(!possible.contains("SHA1-Digest:"))
+                {
+                    allLines.add(cur+possible.trim());
+                }
+                else
+                {
+                    allLines.add(cur);
+                }
             }
         }
+//        ArrayList<String> parsedNames = new ArrayList<String>();
+//        for(String i : allLines) {
+//            if(i.length()>= 6 && i.substring(0,5).equals("Name:"))
+//            {
+//                parsedNames.add(i.substring("Name: ".length()));
+//            }
+//        }
         br.close();
-        return parsedNames;
+        return allLines;
 
     }
 
