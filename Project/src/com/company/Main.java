@@ -30,10 +30,19 @@ public class Main {
         File[] listOFiles = new File(args[0]).listFiles();
         ArrayList<boolean[]> results = new ArrayList<boolean[]>();
         for(File f: listOFiles) {
-            System.out.println(f.getName());
+            //System.out.println(f.getName());
 
             SingleZip test = new SingleZip(f.getName(), args[0]);
-            results.add(test.runTests());
+            boolean[] curResults = test.runTests();
+            if(curResults!= null) {
+                for (int i = 0; i < curResults.length; i++) {
+                    if(curResults[i]==false)
+                    {
+                        System.out.println(f.getName() + " failed test " + i);
+                    }
+                }
+            }
+            results.add(curResults);
         }
         int[] problems = new int[5];
         int totalSurvey = 0;

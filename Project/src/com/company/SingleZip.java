@@ -96,8 +96,8 @@ public class SingleZip {
 
         } catch (Exception e)
         {
-            System.out.println(fileNameZIP);
-            System.out.println(e);
+           // System.out.println(fileNameZIP);
+            System.out.println(fileNameZIP + "failed testing due to exception");
         }
         return null;
     }
@@ -172,7 +172,7 @@ public class SingleZip {
         }
         catch (Exception e)//Something failed. it didn't pass the test
         {
-            System.out.println(e);
+            //System.out.println(e);
             return false;
         }
 
@@ -268,7 +268,7 @@ public class SingleZip {
             return true;
         }catch (Exception e)
         {
-            System.out.println(e);
+           // System.out.println(e);
             return false;
         }
 
@@ -327,7 +327,7 @@ public class SingleZip {
 
         }catch (Exception e)
         {
-            System.out.println(e.getStackTrace());
+           // System.out.println(e.getStackTrace());
             return false;
         }
         return true;
@@ -338,7 +338,7 @@ public class SingleZip {
         return false;
     }
 
-    public boolean matchSignatureSF() //V1 bug 1.
+    public boolean matchSignatureSF() //V1 bug 1. depriciated
     {
         return false;
     }
@@ -372,7 +372,6 @@ public class SingleZip {
             dir.mkdirs();
         }
         FileInputStream fis;
-        //buffer for read and write data to file
         byte[] buffer = new byte[1024];
         try
         {
@@ -384,10 +383,10 @@ public class SingleZip {
             while(ze != null)
             {
                 String fileName = ze.getName();
+                //System.out.println(fileName);
                 filenames.add(fileName);
                 File newFile = new File(destDir + File.separator + fileName);
-                //System.out.println("Unzipping to "+newFile.getPath());
-                //create directories for sub directories in zip
+
                 new File(newFile.getParent()).mkdirs();
                 FileOutputStream fos = new FileOutputStream(newFile);
                 int len;
@@ -398,7 +397,6 @@ public class SingleZip {
                 zis.closeEntry();
                 ze = zis.getNextEntry();
             }
-            //close last ZipEntry
             zis.closeEntry();
             zis.close();
             fis.close();
